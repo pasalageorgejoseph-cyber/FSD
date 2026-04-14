@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootstrap 4 Jumbotron Web Page</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.js"></script>
+<style>
+form{
+position:absolute;
+right:0px;
+background-color:blanchedalmond;
+}
+body{
+background-color:blanchedalmond;
+}
+</style>
+</head>
+<body>
+<nav class="navbar nav navbar-expand-lg blanchedalmond">
+<a class="navbar-brand" href="#"><img src="./Logo.jpg" height="10%" width="10%">CMRIT Hyderabad</a>
+<div class="collapse navbar-collapse">
+<ul class="nav nav-pills">
+<li class="nav-item">
+<a class="nav-link active" href="#">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#">About Us</a>
+</li>
+<li class="nav-item dropdown text-center">
+<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">Departments</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="#">CSE</a>
+<a class="dropdown-item" href="#">CSD</a>
+<a class="dropdown-item" href="#">AIML</a>
+</div>
+</li>
+<li class="nav-item">
+<a class="nav-link disabled">Admissions</a>
+</li>
+</ul>
+<form class="form-inline">
+<input class="form-control" type="text" placeholder="Search" aria-label="Search">
+<button class="btn btn-success" type="submit">Search</button>
+</form>
+</div>
+</nav>
+<div class="jumbotron" style="background-color:blanchedalmond">
+<div class="container">
+<h1>Hello, CMRIT Students!</h1>
+<p>CMR Institute of Technology is one of the best in 2005</p>
+<a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a>
+</div>
+</div>
+<div class="container">
+<div class="row">
+<div class="col-md-4">
+<h2><center>CSE</center></h2>
+<p style="text-align:justify;">Dr. KUMBALA PRADEEP REDDY.g.</p>
+<p style="text-align:right;"><a class="btn btn-warning" href="#" role="button">Read More &raquo;</a></p>
+</div>
+<div class="col-md-4">
+<h2><center>CSD</center></h2>
+<p style="text-align:justify;">Dr. A Nirmal Kumar is a model for..!</p>
+<p style="text-align:right;"><a class="btn btn-info" href="#" role="button">Read More &raquo;</a></p>
+</div>
+<div class="col-md-4">
+<h2><center>AIML</center></h2>
+<p style="text-align:justify;">Dr. L. Arokia Jesu Prabhu is a Machineing!</p>
+<p style="text-align:right;"><a class="btn btn-danger" href="#" role="button">Read More &raquo;</a></p>
+</div>
+</div>
+</div>
+<footer class="container text-center">
+<p>&copy; Institute Established in 2005</p>
+</footer>
+</body>
+</html>
