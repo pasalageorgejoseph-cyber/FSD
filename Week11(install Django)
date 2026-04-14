@@ -1,0 +1,94 @@
+# Commands
+
+python --version
+md CMR
+cd CMR
+python -m venv myenv
+myenv\Scripts\activate
+pip install django
+django-admin --version
+django-admin startproject cmrproject
+cd cmrproject
+
+python manage.py startapp myCMRapp
+
+_______________________________
+# CMR/cmrproject/cmrproject/settings.py
+
+TEMPLATES = [
+ {
+ 'BACKEND': 'django.template.backends.django.DjangoTemplates',
+ 'DIRS': [BASE_DIR /'myCMRapp'/'templates'],
+ 'APP_DIRS': True,
+ 'OPTIONS': {
+ 'context_processors': [
+ 'django.template.context_processors.request',
+ 'django.contrib.auth.context_processors.auth',
+ 'django.contrib.messages.context_processors.messages',
+ ],
+ },
+ },
+]
+
+INSTALLED_APPS = [
+ 'django.contrib.admin',
+ 'django.contrib.auth',
+ 'django.contrib.contenttypes',
+ 'django.contrib.sessions',
+ 'django.contrib.messages',
+ 'django.contrib.staticfiles',
+ 'myCMRapp',
+]
+
+__________________________
+# cmrproject/cmrproject/urls.py
+
+from django.contrib import admin
+from django.urls import path
+from myCMRapp import views
+
+urlpatterns = [
+path('admin/', admin.site.urls),
+path('', views.home),
+path('about/', views.about),
+path('services/', views.services),
+path('contact/', views.contact),
+]
+
+___________________________________
+# cmrproject/cmrproject/myCMRapp/templates/menu.html
+
+<html>
+<head>
+<title>My Django Website</title>
+</head>
+<body>
+<h2>Welcome to My Website</h2>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about/">About</a></li>
+<li><a href="/services/">Services</a></li>
+<li><a href="/contact/">Contact</a></li>
+</ul>
+<h3>{{ message }}</h3>
+</body>
+</html>
+
+______________________________
+# cmrproject/cmrproject/myCMRapp/views.py
+
+from django.shortcuts import render
+def home(request):
+return render(request, "menu.html", {"message": "This is Home Page"})
+def about(request):
+return render(request, "menu.html", {"message": "This is About Page"})
+def services(request):
+return render(request, "menu.html", {"message": "This is Services Page"})
+def contact(request):
+return render(request, "menu.html", {"message": "This is Contact Page"})
+
+___________________
+# Run
+
+python manage.py migrate
+python manage.py runserver
