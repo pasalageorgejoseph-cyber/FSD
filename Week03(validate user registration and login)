@@ -1,0 +1,84 @@
+# registration.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+<script>
+function validate(){
+  let f = document.frm.fname.value;
+  let p = document.frm.phone.value;
+  let m = document.frm.mail.value;
+  if(!/^[A-Za-z]+$/.test(f)){
+    alert("Invalid Name"); return false;
+  }
+  if(p.length!=10){
+    alert("Phone must be 10 digits"); return false;
+  }
+let mail = document.frm.mail.value;
+let at = mail.indexOf("@");
+let dot = mail.indexOf(".");
+if(at == -1 || dot == -1 || (dot - at < 3)){
+  alert("Invalid Email");
+  return false;
+}
+}
+</script>
+</head>
+<body>
+<h2>Registration</h2>
+<form name="frm" action="success.html" onsubmit="return validate()">
+  Name: <input type="text" name="fname" required><br><br>
+  Phone: <input type="text" name="phone" required><br><br>
+  Email: <input type="text" name="mail" required><br><br>
+  <input type="submit" value="Register">
+</form>
+<a href="login.html">Login</a>
+</body>
+</html>
+
+______________________________________
+Login.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<script>
+function validate(){
+  let p = document.frm.pwd.value;
+  if(p.length>8){
+    alert("Max 8 characters only"); return false;
+  }
+  return true;
+}
+</script>
+</head>
+<body>
+<h2>Login</h2>
+<form name="frm" action="success2.html" onsubmit="return validate()">
+  Username: <input type="text" required><br><br>
+  Password: <input type="password" name="pwd" required><br><br>
+  <input type="submit" value="Login">
+</form>
+<a href="registration.html">Register</a>
+</body>
+</html>
+
+________________________________________________
+# Success.html
+
+<html>
+<body>
+<h2>Registration Successful</h2>
+</body>
+</html>
+
+_______________________________________________
+# Success2.html
+
+<html>
+<body>
+<h2>Login Successful</h2>
+</body>
+</html>
