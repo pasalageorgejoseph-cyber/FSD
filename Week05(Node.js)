@@ -1,0 +1,98 @@
+# Login.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function login(){
+  let m = document.f.email.value;
+  let storedEmail = localStorage.getItem("email");
+  if(m == storedEmail){
+    alert("Login Success");
+    return true;
+  }else{
+    alert("Invalid Email");
+    return false;
+  }
+}
+</script>
+</head>
+<body>
+<h2>Login</h2>
+<form name="f" action="/profile" onsubmit="return login()">
+  Email: <input type="text" name="email"><br><br>
+  <input type="submit" value="Login">
+</form>
+</body>
+</html>
+
+______________________________________________
+# Server.js
+
+const express = require('express');
+const app = express();
+app.use(express.urlencoded({extended:true}));
+app.get('/', (req,res)=> res.sendFile(__dirname+'/register.html'));
+app.get('/login', (req,res)=> res.sendFile(__dirname+'/login.html'));
+app.get('/profile', (req,res)=> res.sendFile(__dirname+'/profile.html'));
+app.post('/login', (req,res)=> res.redirect('/profile'));
+app.get('/logout', (req,res)=> res.redirect('/'));
+app.listen(3000, ()=> console.log("Server running"));
+
+_____________________________________________
+# Profile.html
+
+<html>
+<body>
+<h2>Welcome User</h2>
+<a href="/logout" onclick="localStorage.clear()">Logout</a>
+</body>
+</html>
+
+___________________________________________
+# Register.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function validate(){
+  let f = document.f.name.value;
+  let p = document.f.phone.value;
+  let m = document.f.email.value;
+    for(let i in f){
+    let ch = f.charCodeAt(i);
+    if(ch<65 || ch>90 && ch<97 || ch>122){
+      alert("Invalid Name"); return false;
+    }
+  }
+   if(p.length != 10){
+    alert("Phone must be 10 digits"); return false;
+  }
+  var reg = /^([a-zA-Z][a-zA-Z0-9\.-]+)@([a-zA-Z-]+).([a-z]{2,8})(.[a-z]{2,8})?$/;
+  if(!reg.test(m)){
+    alert("Invalid Email"); return false;
+  }
+  localStorage.setItem("name",f);
+  localStorage.setItem("phone",p);
+  localStorage.setItem("email",m);
+  alert("Registration Successful");
+  return true;
+}
+</script>
+</head>
+<body>
+<h2>Register</h2>
+<form name="f" action="/login" onsubmit="return validate()">
+  Name: <input type="text" name="name"><br><br>
+  Phone: <input type="text" name="phone"><br><br>
+  Email: <input type="text" name="email"><br><br>
+  <input type="submit" value="Register">
+</form>
+</body>
+</html>
+
+________________________________
+# Output:
+npm install express
+node server.js
