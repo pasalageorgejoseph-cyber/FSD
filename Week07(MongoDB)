@@ -1,0 +1,144 @@
+# authentication.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Auth</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body align="center">
+<h2>CMRIT Engineering College</h2>
+<div id="authentic">
+<h3>Signup</h3>
+<input id="sname" placeholder="Username"><br><br>
+<input id="swork" placeholder="Profession"><br><br>
+<input id="spass" type="password" placeholder="Password"><br><br>
+<button onclick="signup()">Register</button>
+<hr>
+<h3>Login</h3>
+<input id="lname" placeholder="Username"><br><br>
+<input id="lpass" type="password" placeholder="Password"><br><br>
+<button onclick="login()">Login</button>
+</div>
+<div id="welcome" style="display:none">
+<h3>WELCOME</h3>
+<p><b>User:</b> <span id="user"></span></p>
+<p><b>Profession:</b> <span id="work"></span></p>
+<button onclick="logout()">Logout</button>
+</div>
+<script>
+function signup()   // Signup
+{
+ $.post("/register",
+ {
+  name: sname.value,
+  password: spass.value,
+  work: swork.value
+ },
+ r => alert(r.ok ? "Registered Successfully" : "User Already Exists"));
+}
+function login()   // Login
+{
+ $.post("/login",
+ {
+  name: lname.value,
+  password: lpass.value
+ },
+ r =>
+ {
+  if(!r.ok) return alert("Invalid Login");
+
+  localStorage.token = r.token;
+
+  showWelcome();
+ });
+}
+function showWelcome()   // Show Welcome Page
+{
+ $.post("/verify",
+ { token: localStorage.token },
+ r =>
+ {
+  if(!r.ok) return alert("Session Expired");
+  authentic.style.display = "none";
+  welcome.style.display = "block";
+  user.innerText = r.data.name;
+  work.innerText = r.data.work;
+ });
+}
+function logout()   // Logout
+{
+ localStorage.clear();
+ location.reload();
+}
+</script>
+</body>
+</html>
+
+_________________________
+# server.js
+
+const express = require("express");
+const { MongoClient } = require("mongodb");
+const jwt = require("jsonwebtoken");
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+const SECRET = "secret";
+const client = new MongoClient("mongodb://127.0.0.1:27017");
+let users;
+async function getUsers()   // Connect to DB (only once)
+{
+ if(!users) {
+  await client.connect();
+  users = client.db("YamunaDB").collection("users");
+  console.log("MongoDB Connected");
+ }
+ return users;
+}
+app.get("/", (req,res) =>   // Serve HTML
+{
+ res.sendFile(__dirname + "/authentication.html")
+});
+app.post("/register", async (req,res) =>   // Register
+{
+ const col = await getUsers();
+ const { name, password, work } = req.body
+ if(await col.findOne({ name }))
+  return res.json({ ok:false });
+ await col.insertOne({ name, password, work });
+ res.json({ ok:true });
+});
+app.post("/login", async (req,res) =>   // Login
+{
+ const col = await getUsers();
+ const user = await col.findOne(req.body);
+ if(!user)
+  return res.json({ ok:false });
+ const token = jwt.sign(user, SECRET, { expiresIn:"1h" });
+ res.json({ ok:true, token });
+});
+app.post("/verify", (req,res) =>   // Verify Token
+{
+ try
+ {
+  const data = jwt.verify(req.body.token, SECRET);
+  res.json({ ok:true, data });
+ }
+ catch
+ {
+  res.json({ ok:false });
+ }
+});
+app.listen(3001, () => {
+    console.log("Server running on port 3001");
+    console.log("Open: http://localhost:3001");
+});
+
+___________________________________________
+# output
+
+npm init -y
+npm install express mongodb jsonwebtoken
+mongod
+npm start
